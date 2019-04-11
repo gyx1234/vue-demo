@@ -1,6 +1,6 @@
 <template>
   <div id="indexGoodsDetail">
-    <mt-header title="详情页">
+    <mt-header title="详情页" fixed>
       <router-link to="" slot="left">
         <mt-button icon="back" @click="$router.back(-1)">返回</mt-button>
       </router-link>

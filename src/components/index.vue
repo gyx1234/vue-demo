@@ -1,6 +1,6 @@
 <template>
   <div id="index">
-    <mt-header title="首页"></mt-header>
+    <mt-header title="首页" fixed></mt-header>
     <!--商品分类-->
     <nav class="typesHeader flex">
       <div class="typesList" v-for="(goodstypes,$index) in goodsTypes" :key="goodstypes.id"
@@ -56,7 +56,7 @@
         var that = this
         // console.log('减购物车',index, num, id, name, price, unitname, gou, shoppingcart)
         that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
-          console.log('减购物车', res)
+          // console.log('减购物车', res)
           if (res.state === 1) {
             that.goodsList[index].shoppingcart[0].productcount--
             if(that.goodsList[index].shoppingcart[0].productcount === 0 ) {
@@ -88,7 +88,7 @@
           }
         }
         that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: 1, Productunitname: unitname}).then((res) => {
-          console.log('添加购物车', res)
+          // console.log('添加购物车', res)
           if (res.state === 1) {
             if (that.goodsList[index].shoppingcart[0] === undefined) {
               that.goodsList[index].shoppingcart.push({unitname: '', productcount: '1', productid: id, status: '1'})

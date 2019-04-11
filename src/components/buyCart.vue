@@ -1,6 +1,6 @@
 <template>
   <div id="buyCart">
-    <mt-header title="购物车"></mt-header>
+    <mt-header title="购物车" fixed></mt-header>
     <div class="main">购物车{{selected}}</div>
 
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
