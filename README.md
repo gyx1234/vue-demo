@@ -22,6 +22,16 @@
 
 # 安装 Mint UI
    使用Header
-   使用Tabbar，并将Tabbar组件化
+   使用Tabbar：将Tabbar实现组件化，利用props动态传值改变选中状态
 ```
 
+``` bash
+# 目录结构
+   index 首页
+     indexGoodsDetail 商品详情页
+   buyCart 购物车
+   mine 我的
+
+ 组件
+   tabber
+```
