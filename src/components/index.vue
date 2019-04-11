@@ -2,7 +2,7 @@
   <div id="index">
     <mt-header title="首页" fixed></mt-header>
     <!--商品分类-->
-    <nav class="typesHeader flex">
+    <nav class="typesHeader flex header_margintop">
       <div class="typesList" v-for="(goodstypes,$index) in goodsTypes" :key="goodstypes.id"
            v-on:click="toggle($index, goodstypes.id)" :class="{active:$index==active}">
         {{goodstypes.name}}

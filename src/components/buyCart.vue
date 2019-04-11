@@ -1,7 +1,7 @@
 <template>
   <div id="buyCart">
     <mt-header title="购物车" fixed></mt-header>
-    <div class="main">购物车{{selected}}</div>
+    <div class="main header_margintop">购物车{{selected}}</div>
 
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
   </div>

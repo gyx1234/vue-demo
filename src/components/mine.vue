@@ -1,7 +1,7 @@
 <template>
   <div id="mine">
     <mt-header title="我的" fixed></mt-header>
-    <div class="main">我的{{selected}}</div>
+    <div class="main header_margintop">我的{{selected}}</div>
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
   </div>
 </template>
