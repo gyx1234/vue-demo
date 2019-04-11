@@ -31,20 +31,19 @@
     },
     watch: {
       $route () {
-        // console.log('改变路由')
+        // console.log("改变路由")
       },
       message: function (val, oldVal) {
         // 这里就可以通过 val 的值变更来确定去向
-        var that = this
         switch(val){
-          case 'index':
-            that.$router.push({path: '/index'});
+          case "index":
+            this.$router.push({path: "/index"})
             break;
-          case 'buyCart':
-            that.$router.push({path: '/buyCart'});
+          case "buyCart":
+            this.$router.push({path: "/buyCart"})
             break;
-          case 'mine':
-            that.$router.push({path: '/mine'});
+          case "mine":
+            this.$router.push({path: "/mine"})
             break;
         }
       }

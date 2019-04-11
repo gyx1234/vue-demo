@@ -46,6 +46,7 @@
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       if (!that.$route.meta.isBack) {
         // console.log('buyCart activated----', '表明需要获取新数据，否则就不再请求，直接使用缓存的数据')
+        that.selected = "buyCart"
       }
       // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
       that.$route.meta.isBack = false

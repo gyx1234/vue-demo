@@ -20,9 +20,11 @@
             <div class="goods_price">¥ {{item.price}}</div>
             <div class="goods_stock">库存 {{item.num}}</div>
           </div>
-          <div class="goods_bottom_right">
-            <!--<i class="iconfont icon-jian"></i>-->
-            <!--<i class="iconfont icon-jia1"></i>-->
+          <div class="goods_bottom_right flex">
+            <i class="iconfont icon-jian"></i>
+            <div v-if="item.shoppingcart.length>0" class="add_num">{{item.shoppingcart[0].productcount}}</div>
+            <div v-else class="add_num">0</div>
+            <i class="iconfont icon-jia1"></i>
           </div>
         </div>
       </div>
@@ -44,7 +46,6 @@
         active: 0,
         goodsTypes: [],
         goodsList: [],
-        goodsTypesId: '',
         selected:"index",
         tabs:[require("../assets/images/icons/home_green.png"),require("../assets/images/icons/cart_gray.png"), require("../assets/images/icons/my_gray.png")],
       }
@@ -63,9 +64,8 @@
       // 商品列表
       goodslist: function (id) {
         var that = this
-        console.log('获取商品列表id-------', id)
-        that.$post(Ports.getProductList, {top_type: id}).then((productList) => {
-          console.log('获取商品列表', productList.data)
+        that.$post(Ports.getProductList, {top_type: id, userid: 10118}).then((productList) => {
+          console.log('---id----获取商品列表------：', id, productList.data)
           if (productList.state === 1) {
             that.goodsList = productList.data
           } else {
@@ -80,8 +80,8 @@
           console.log('获取分类', getTypes)
           if (getTypes.state === 1) {
             that.goodsTypes = getTypes.data
-            that.goodsTypesId = getTypes.data[0].id
-            // console.log('获取商品列表that.goodsTypesId', that.goodsTypesId)
+            var goodsTypesId = getTypes.data[0].id
+            that.goodslist(goodsTypesId) // 商品列表
           } else {
             console.log('请求错误')
           }
@@ -89,14 +89,12 @@
       }
     },
     created() {
-//       // console.log('index created 创建')
-
+       // console.log('index created 创建')
     },
     mounted() {
       // console.log('index 安装 完成挂载')
       var that = this
       that.goodstypes() // 商品分类
-      that.goodslist(that.goodsTypesId) // 商品列表
     },
     updated() {
       // console.log('index  updated 更新')
@@ -119,6 +117,7 @@
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       if (!that.$route.meta.isBack) {
         // console.log('index activated----', '表明需要获取新数据，否则就不再请求，直接使用缓存的数据')
+        that.selected = "index"
       }
       // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
       that.$route.meta.isBack = false
@@ -143,7 +142,9 @@
   .main .goods_list .goods_bottom_left .goods_price {font-size: 1rem;}
   .main .goods_list .goods_bottom_left .goods_stock {font-size: 0.5rem;color: #999;}
   .goods_list .goods_bottom {justify-content: space-between;align-items: center;}
+  .goods_list .goods_bottom_right{align-items: center;}
   .goods_list .goods_bottom_right .iconfont{border-radius:50%;font-size:22px;}
   .goods_list .goods_bottom_right .icon-jian{color:#d8d7d7;background-color:#f2f2f2;}
+  .goods_list .goods_bottom_right .add_num{min-width:30px;font-size: 10px;color:#F44D4D;text-align: center;}
   .goods_list .goods_bottom_right .icon-jia1{color:#ff811a;}
 </style>
