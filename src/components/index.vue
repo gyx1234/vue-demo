@@ -10,7 +10,7 @@
     </nav>
     <!--商品列表-->
     <div class="flex main">
-      <div class="goods_list" v-for="item in goodsList" :key="item.id">
+      <div class="goods_list" v-for="(item, index) in goodsList" :key="item.id">
         <div class="goods_img" v-on:click="goodsDetail(item.id)" :id="item.id">
           <img :src="item.img_url"/>
         </div>
@@ -21,10 +21,10 @@
             <div class="goods_stock">库存 {{item.num}}</div>
           </div>
           <div class="goods_bottom_right flex">
-            <i class="iconfont icon-jian"></i>
+            <i v-if="item.shoppingcart.length>0" class="iconfont icon-jian" v-on:click="minTapp(index, item.num, item.id, item.name, item.price, item.unitname, 'gou', item.shoppingcart[0])" ></i>
             <div v-if="item.shoppingcart.length>0" class="add_num">{{item.shoppingcart[0].productcount}}</div>
-            <div v-else class="add_num">0</div>
-            <i class="iconfont icon-jia1"></i>
+            <!--<div v-else class="add_num"></div>-->
+            <i class="iconfont icon-jia1" v-on:click="addTap(index, item.num, item.id, item.name, item.price, item.unitname, 'gou', item.shoppingcart[0])"></i>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
   import Vue from 'vue'
   import Ports from '@/utils/ports/ports.js'
   import tabbar from '@/components/tabbar'
-
+  import { Toast } from 'mint-ui';
   export default {
     name: 'index',
     components:{tabbar},
@@ -51,11 +51,64 @@
       }
     },
     methods: {
+      // 减购物车
+      minTapp(index, num, id, name, price, unitname, gou, shoppingcart) {
+        var that = this
+        // console.log('减购物车',index, num, id, name, price, unitname, gou, shoppingcart)
+        that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
+          console.log('减购物车', res)
+          if (res.state === 1) {
+            that.goodsList[index].shoppingcart[0].productcount--
+            if(that.goodsList[index].shoppingcart[0].productcount === 0 ) {
+              that.goodsList[index].shoppingcart.length = 0
+            }
+          } else {
+            Toast({message: '减少失败',duration: 1000});
+          }
+        })
+      },
+      // 添加购物车
+      addTap(index, num, id, name, price, unitname, gou, shoppingcart) {
+        // console.log('添加购物车',index, num, id, name, price, unitname, gou, shoppingcart)
+        var that = this
+        // if (gou === 'gou') {
+        // }
+        if (num === '0') {
+          Toast({message: '已售罄',duration: 1000});
+          return
+        }
+        if (that.goodsList[index].shoppingcart[0] !== undefined) {
+          if (Number(that.goodsList[index].shoppingcart[0].productcount) >= 999) {
+            Toast({message: '商品添加数量已达到上限',duration: 1000});
+            return
+          }
+          if (Number(that.goodsList[index].num) <= Number(that.goodsList[index].shoppingcart[0].productcount)) {
+            Toast({message: '只有这么多了',duration: 1000});
+            return
+          }
+        }
+        that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: 1, Productunitname: unitname}).then((res) => {
+          console.log('添加购物车', res)
+          if (res.state === 1) {
+            if (that.goodsList[index].shoppingcart[0] === undefined) {
+              that.goodsList[index].shoppingcart.push({unitname: '', productcount: '1', productid: id, status: '1'})
+              // 商品详情加
+              that.proDeNum = 1
+            } else {
+              that.goodsList[index].shoppingcart[0].productcount++
+            }
+          } else {
+            Toast({message: '添加失败',duration: 1000});
+          }
+        })
+      },
+      // 切换菜单
       toggle(index, id) {
         this.active = index
         console.log('toggle', index, id)
         this.goodslist(id) // 商品列表
       },
+      // 跳转详情页
       goodsDetail(e) {
         console.log('点击商品', e)
         this.$router.push({path: '/indexGoodsDetail', query: {id: e}})
