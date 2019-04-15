@@ -1,8 +1,8 @@
 <template>
-  <div id="index">
+  <div id="index" class="header_margintop">
     <mt-header title="首页" fixed></mt-header>
     <!--商品分类-->
-    <nav class="typesHeader flex header_margintop">
+    <nav class="typesHeader flex ">
       <div class="typesList" v-for="(goodstypes,$index) in goodsTypes" :key="goodstypes.id"
            v-on:click="toggle($index, goodstypes.id)" :class="{active:$index==active}">
         {{goodstypes.name}}
@@ -34,10 +34,10 @@
 </template>
 
 <script>
-  import Vue from 'vue'
   import Ports from '@/utils/ports/ports.js'
   import tabbar from '@/components/tabbar'
-  import { Toast } from 'mint-ui';
+  import { Toast } from 'mint-ui'
+
   export default {
     name: 'index',
     components:{tabbar},
@@ -63,7 +63,7 @@
               that.goodsList[index].shoppingcart.length = 0
             }
           } else {
-            Toast({message: '减少失败',duration: 1000});
+            Toast({message: '减少失败',duration: 1000})
           }
         })
       },
@@ -74,7 +74,7 @@
         // if (gou === 'gou') {
         // }
         if (num === '0') {
-          Toast({message: '已售罄',duration: 1000});
+          Toast({message: '已售罄',duration: 1000})
           return
         }
         if (that.goodsList[index].shoppingcart[0] !== undefined) {
@@ -83,7 +83,7 @@
             return
           }
           if (Number(that.goodsList[index].num) <= Number(that.goodsList[index].shoppingcart[0].productcount)) {
-            Toast({message: '只有这么多了',duration: 1000});
+            Toast({message: '只有这么多了',duration: 1000})
             return
           }
         }
@@ -118,7 +118,7 @@
       goodslist: function (id) {
         var that = this
         that.$post(Ports.getProductList, {top_type: id, userid: 10118}).then((productList) => {
-          console.log('---id----获取商品列表------：', id, productList.data)
+          // console.log('---id----获取商品列表------：', id, productList.data)
           if (productList.state === 1) {
             that.goodsList = productList.data
           } else {
@@ -130,7 +130,7 @@
       goodstypes: function () {
         var that = this
         that.$post(Ports.getTypes, {}).then((getTypes) => {
-          console.log('获取分类', getTypes)
+          // console.log('获取分类', getTypes)
           if (getTypes.state === 1) {
             that.goodsTypes = getTypes.data
             var goodsTypesId = getTypes.data[0].id
@@ -190,7 +190,7 @@
   .main {padding: 5px 5px 60px 5px;flex-wrap: wrap;}
   .main .goods_list {width: 44%;margin: 15px 3%;box-sizing: border-box;}
   .main .goods_list .goods_img {width: 100%;display: flex;align-items: center;justify-content: center;border-radius: 8px;position: relative;background-color: #fff;}
-  .main .goods_list .goods_img img {width: 100%;max-height: 10.1rem;}
+  .main .goods_list .goods_img img {width: 100%;}
   .main .goods_list .goods_name {font-size: 0.5rem;word-break: break-all;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;padding: 10px 0;height: 2.1rem;}
   .main .goods_list .goods_bottom_left .goods_price {font-size: 1rem;}
   .main .goods_list .goods_bottom_left .goods_stock {font-size: 0.5rem;color: #999;}

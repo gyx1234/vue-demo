@@ -1,11 +1,11 @@
 <template>
-  <div id="indexGoodsDetail">
+  <div id="indexGoodsDetail" class="header_margintop">
     <mt-header title="详情页" fixed>
       <router-link to="" slot="left">
         <mt-button icon="back" @click="$router.back(-1)">返回</mt-button>
       </router-link>
     </mt-header>
-    <div class="goods_img header_margintop">
+    <div class="goods_img ">
       <img :src="goodsDetail.img_url"/>
     </div>
     <div class="detail_main">
