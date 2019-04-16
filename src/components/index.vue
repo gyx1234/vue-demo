@@ -48,6 +48,7 @@
         goodsList: [],
         selected:"index",
         tabs:[require("../assets/images/icons/home_green.png"),require("../assets/images/icons/cart_gray.png"), require("../assets/images/icons/my_gray.png")],
+        typeIndex: 0, // 首页默认显示哪条数据
       }
     },
     methods: {
@@ -106,6 +107,7 @@
       toggle(index, id) {
         this.active = index
         console.log('toggle', index, id)
+        this.typeIndex = index
         this.goodslist(id) // 商品列表
       },
       // 跳转详情页
@@ -133,7 +135,7 @@
           // console.log('获取分类', getTypes)
           if (getTypes.state === 1) {
             that.goodsTypes = getTypes.data
-            var goodsTypesId = getTypes.data[0].id
+            var goodsTypesId = getTypes.data[that.typeIndex].id
             that.goodslist(goodsTypesId) // 商品列表
           } else {
             console.log('请求错误')
@@ -147,7 +149,7 @@
     mounted() {
       // console.log('index 安装 完成挂载')
       var that = this
-      that.goodstypes() // 商品分类
+      that.goodstypes()
     },
     updated() {
       // console.log('index  updated 更新')
@@ -158,7 +160,7 @@
     // 钩子函数来判断页面来源：
     beforeRouteEnter(to, from, next) {
       console.log('index beforeRouteEnter', from.name)
-      if (from.name === 'indexGoodsDetail') { //判断是从哪个路由过来的，若是detail页面不需要刷新获取新数据，直接用之前缓存的数据即可
+      if (from.name === 'indexGoodsDetail' || from.name === 'mine') { //判断是从哪个路由过来的，若是detail页面不需要刷新获取新数据，直接用之前缓存的数据即可
         to.meta.isBack = true;
       }
       next();
@@ -171,6 +173,7 @@
       if (!that.$route.meta.isBack) {
         // console.log('index activated----', '表明需要获取新数据，否则就不再请求，直接使用缓存的数据')
         that.selected = "index"
+        that.goodstypes() // 商品分类
       }
       // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
       that.$route.meta.isBack = false

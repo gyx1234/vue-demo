@@ -8,24 +8,27 @@
       <label for="quan" class="label_com">
         <input id="quan" type="checkbox" v-on:click="checkAll($event)"> 全选
       </label>
-      <div v-for="(item,index) in cartList" class="flex label_div">
-        <label class="label_com flex label_box">
-          <!-- v-model 双向数据绑定命令 -->
-          <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData" v-on:click="checkOne(item.id, item.productid)">
-          <div class="flex label_right">
-            <div class="cart_img"><img :src="item.img_url"/></div>
-            <div class="cart_ct flex">
-              <div class="product_name">{{item.productname}}</div>
-              <div class="product_price">¥ {{item.productprice}}</div>
+      <div v-for="(item,index) in cartList">
+        <div v-if="item.productcount!=0" class="flex label_div">
+          <label class="label_com flex label_box">
+            <!-- v-model 双向数据绑定命令 -->
+            <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData" v-on:click="checkOne(item.id, item.productid)">
+            <div class="flex label_right">
+              <div class="cart_img"><img :src="item.img_url"/></div>
+              <div class="cart_ct flex">
+                <div class="product_name">{{item.productname}}</div>
+                <div class="product_price">¥ {{item.productprice}}</div>
+              </div>
             </div>
+          </label>
+          <div class="flex icon_add">
+            <i class="iconfont icon-jian" v-on:click="minTapp(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname, 'che')" ></i>
+            <div class="add_num">{{item.productcount}}</div>
+            <i class="iconfont icon-jia1" v-on:click="addTap(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname, 'che')"></i>
           </div>
-        </label>
-        <div class="flex icon_add">
-          <i class="iconfont icon-jian" v-on:click="minTapp(index, item.productcount, item.id, item.productname, item.productprice, item.unitname, 'che')" ></i>
-          <div class="add_num">{{item.productcount}}</div>
-          <i class="iconfont icon-jia1" v-on:click="addTap(index, item.productcount, item.id, item.productname, item.productprice, item.unitname, 'che')"></i>
         </div>
       </div>
+
 
     </div>
 
@@ -37,8 +40,6 @@
   import tabbar from '@/components/tabbar'
   import Ports from '@/utils/ports/ports.js'
   import { Toast } from 'mint-ui';
-  import axios from 'axios'
-  import qs from 'qs'
 
   export default {
     name: "buyCart",
@@ -65,28 +66,35 @@
     },
     methods: {
       // 减购物车
-      minTapp(index, num, id, name, price, unitname, gou) {
+      minTapp(index, num, productid, name, price, unitname, gou) {
         var that = this
-        console.log('减购物车',index, num, id, name, price, unitname, gou)
-        // that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
-        //   // console.log('减购物车', res)
-        //   if (res.state === 1) {
-        //     that.goodsList[index].shoppingcart[0].productcount--
-        //     if(that.goodsList[index].shoppingcart[0].productcount === 0 ) {
-        //       that.goodsList[index].shoppingcart.length = 0
-        //     }
-        //   } else {
-        //     Toast({message: '减少失败',duration: 1000})
-        //   }
-        // })
+        console.log('减购物车',index, num, productid, name, price, unitname, gou)
+        // if (Number(that.cartList[index].productcount) === 0) {
+        //   that.cartList[index].productcount === 0
+        //   return
+        // }
+        that.$post(Ports.changeCart, {userid: 10118, Productid: productid, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
+          // console.log('减购物车', res)
+          if (res.state === 1) {
+            that.cartList[index].productcount --
+          } else {
+            Toast({message: '减少失败',duration: 1000})
+          }
+        })
       },
       // 添加购物车
-      addTap(index, num, id, name, price, unitname, gou, shoppingcart) {
-        console.log('添加购物车',index, num, id, name, price, unitname, gou)
+      addTap(index, num, productid, name, price, unitname, che) {
+        // console.log('添加购物车',index, num, productid, name, price, unitname, che)
         var that = this
-        that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: 1, Productunitname: unitname}).then((res) => {
+        //num
+        if (Number(that.cartList[index].num) <= Number(that.cartList[index].productcount)) {
+          Toast({message: '只有这么多了',duration: 1000})
+          return
+        }
+        that.$post(Ports.changeCart, {userid: 10118, Productid: productid, Productname: name, Productprice: price, Productcount: 1, Productunitname: unitname}).then((res) => {
           // console.log('添加购物车', res)
           if (res.state === 1) {
+            that.cartList[index].productcount ++
           } else {
             Toast({message: '添加失败',duration: 1000});
           }
@@ -125,6 +133,8 @@
     },
     mounted () {
       // console.log('buyCart mounted 安装 完成挂载')
+      var that = this
+      that.cartFn()
     },
     updated () {
       // console.log('buyCart updated 更新')
@@ -135,9 +145,9 @@
     // 钩子函数来判断页面来源：
     beforeRouteEnter(to, from, next) {
       // console.log('buyCart beforeRouteEnter', to.meta.isBack)
-      // if (from.name === '') { //判断是从哪个路由过来的，若是detail页面不需要刷新获取新数据，直接用之前缓存的数据即可
-      //   to.meta.isBack = true;
-      // }
+      if (from.name === 'mine') {
+        to.meta.isBack = true;
+      }
       next();
     },
     // keep-alive 组件激活时调用。
