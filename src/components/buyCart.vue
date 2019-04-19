@@ -64,7 +64,8 @@
     watch: { // 监视双向绑定的数据数组
       checkData: { // 监视双向绑定的数组变化
         handler() {
-          if (this.checkData.length == this.cartList.length) {
+          var that = this
+          if (that.checkData.length == that.cartList.length) {
             document.querySelector('#quan').checked = true;
           } else {
             document.querySelector('#quan').checked = false;
@@ -93,7 +94,7 @@
         if (e.target.checked) {
           that.tatalPrice = 0
           that.cartList.forEach((el, i) => {
-            // 数组里没有这一个value才push，防止重复push
+            // 数组里没有value的才push，防止重复push
             if (that.checkData.indexOf(el.productid) == '-1') {
               that.checkData.push(el.productid)
             }
@@ -169,6 +170,8 @@
           console.log('购物车列表', res)
           if (res.state === 1) {
             that.cartList = res.data
+            that.tatalPrice=0
+            that.checkData=[]
           } else {
             console.log('请求错误')
           }
