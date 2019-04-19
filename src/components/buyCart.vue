@@ -1,35 +1,42 @@
 <template>
   <div id="buyCart" class="header_margintop ">
     <mt-header title="购物车" fixed></mt-header>
-    <div class="cart_header">购物车{{selected}}</div>
 
     <div class="checkbox main">
-
-      <label for="quan" class="label_com">
-        <input id="quan" type="checkbox" v-on:click="checkAll($event)"> 全选
-      </label>
       <div v-for="(item,index) in cartList">
         <div v-if="item.productcount!=0" class="flex label_div">
           <label class="label_com flex label_box">
             <!-- v-model 双向数据绑定命令 -->
-            <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData" v-on:click="checkOne(item.id, item.productid)">
+            <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData"
+                   v-on:click="checkOne($event, index, item.id, item.productid,item.productprice,item.productcount)">
             <div class="flex label_right">
               <div class="cart_img"><img :src="item.img_url"/></div>
               <div class="cart_ct flex">
                 <div class="product_name">{{item.productname}}</div>
-                <div class="product_price">¥ {{item.productprice}}</div>
+                <div class="product_price">¥ {{(item.productprice * item.productcount)|addZero}}</div>
               </div>
             </div>
           </label>
           <div class="flex icon_add">
-            <i class="iconfont icon-jian" v-on:click="minTapp(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname, 'che')" ></i>
+            <i class="iconfont icon-jian"
+               v-on:click="minTapp(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
             <div class="add_num">{{item.productcount}}</div>
-            <i class="iconfont icon-jia1" v-on:click="addTap(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname, 'che')"></i>
+            <i class="iconfont icon-jia1"
+               v-on:click="addTap(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
           </div>
         </div>
       </div>
+    </div>
 
-
+    <div class="footer_label flex">
+      <label for="quan" class="label_com footer_checkbox flex">
+        <input id="quan" type="checkbox" v-on:click="checkAll($event)">
+        <div class="footer_checkbox_lt"> 全选</div>
+      </label>
+      <div class="footer_label_rt flex">
+        <div class="total" v-model="cartList">合计：¥ {{tatalPrice|addZero}}</div>
+        <div class="set_btn">结算</div>
+      </div>
     </div>
 
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
@@ -39,25 +46,27 @@
 <script>
   import tabbar from '@/components/tabbar'
   import Ports from '@/utils/ports/ports.js'
-  import { Toast } from 'mint-ui';
+  import {Toast} from 'mint-ui';
 
   export default {
     name: "buyCart",
-    components:{tabbar},
+    components: {tabbar},
     data() {
       return {
-        selected:"buyCart",
-        tabs:[require("../assets/images/icons/home_gray.png"),require("../assets/images/icons/cart_green.png"), require("../assets/images/icons/my_gray.png")],
+        selected: "buyCart,hehe",
+        tabs: [require("../assets/images/icons/home_gray.png"), require("../assets/images/icons/cart_green.png"), require("../assets/images/icons/my_gray.png")],
         cartList: [],
         checkData: [], // 双向绑定checkbox数据数组
+        tatalPrice: 0,
+        goodsPrice: [],
       }
     },
     watch: { // 监视双向绑定的数据数组
       checkData: { // 监视双向绑定的数组变化
-        handler(){
-          if(this.checkData.length == this.cartList.length){
+        handler() {
+          if (this.checkData.length == this.cartList.length) {
             document.querySelector('#quan').checked = true;
-          }else {
+          } else {
             document.querySelector('#quan').checked = false;
           }
         },
@@ -65,55 +74,90 @@
       }
     },
     methods: {
-      // 减购物车
-      minTapp(index, num, productid, name, price, unitname, gou) {
+      // 勾选单个商品
+      checkOne(e, index, cartid, productid, productprice, productcount) {
         var that = this
-        console.log('减购物车',index, num, productid, name, price, unitname, gou)
+        // console.log('勾选单个商品', e.target.checked, cartid, productid, productprice,productcount)
+        console.log('勾选单个商品---单商品总价---', e, (Number(productprice) * Number(productcount)).toFixed(2))
+        if (e.target.checked) {
+          that.tatalPrice += Number(productprice) * Number(productcount)
+          that.tatalPrice.toFixed(2)
+        } else {
+          that.tatalPrice -= Number(productprice) * Number(productcount)
+          that.tatalPrice.toFixed(2)
+        }
+      },
+      // 点击全选事件
+      checkAll(e) {
+        var that = this
+        if (e.target.checked) {
+          that.tatalPrice = 0
+          that.cartList.forEach((el, i) => {
+            // 数组里没有这一个value才push，防止重复push
+            if (that.checkData.indexOf(el.productid) == '-1') {
+              that.checkData.push(el.productid)
+            }
+            that.tatalPrice += (Number(el.productprice) * Number(el.productcount))
+          })
+        } else { // 全不选选则清空绑定的数组
+          that.checkData = []
+          that.tatalPrice = 0
+        }
+        // console.log(22222222, that.checkData)
+      },
+      // 减购物车
+      minTapp(index, num, productid, name, price, unitname) {
+        var that = this
+        // console.log('减购物车', index, num, productid, name, price, unitname)
         // if (Number(that.cartList[index].productcount) === 0) {
         //   that.cartList[index].productcount === 0
         //   return
         // }
-        that.$post(Ports.changeCart, {userid: 10118, Productid: productid, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
+        that.$post(Ports.changeCart, {
+          userid: 10118,
+          Productid: productid,
+          Productname: name,
+          Productprice: price,
+          Productcount: -1,
+          Productunitname: unitname
+        }).then((res) => {
           // console.log('减购物车', res)
           if (res.state === 1) {
-            that.cartList[index].productcount --
+            that.cartList[index].productcount--
+            if (document.querySelector('#quan').checked) {
+              that.tatalPrice -= Number(price)
+            }
           } else {
-            Toast({message: '减少失败',duration: 1000})
+            Toast({message: '减少失败', duration: 1000})
           }
         })
       },
       // 添加购物车
-      addTap(index, num, productid, name, price, unitname, che) {
-        // console.log('添加购物车',index, num, productid, name, price, unitname, che)
+      addTap(index, num, productid, name, price, unitname) {
+        // console.log('添加购物车',index, num, productid, name, price, unitname)
         var that = this
-        //num
         if (Number(that.cartList[index].num) <= Number(that.cartList[index].productcount)) {
-          Toast({message: '只有这么多了',duration: 1000})
+          Toast({message: '只有这么多了', duration: 1000})
           return
         }
-        that.$post(Ports.changeCart, {userid: 10118, Productid: productid, Productname: name, Productprice: price, Productcount: 1, Productunitname: unitname}).then((res) => {
+        that.$post(Ports.changeCart, {
+          userid: 10118,
+          Productid: productid,
+          Productname: name,
+          Productprice: price,
+          Productcount: 1,
+          Productunitname: unitname
+        }).then((res) => {
           // console.log('添加购物车', res)
           if (res.state === 1) {
-            that.cartList[index].productcount ++
+            that.cartList[index].productcount++
+            if (document.querySelector('#quan').checked) {
+              that.tatalPrice += Number(price)
+            }
           } else {
-            Toast({message: '添加失败',duration: 1000});
+            Toast({message: '添加失败', duration: 1000});
           }
         })
-      },
-      checkOne(cartid, productid) {
-        console.log(22222, cartid, productid)
-      },
-      checkAll(e){ // 点击全选事件
-        if(e.target.checked){
-          this.cartList.forEach((el,i)=>{
-            // 数组里没有这一个value才push，防止重复push
-            if(this.checkData.indexOf(el.productid) == '-1'){
-              this.checkData.push(el.productid);
-            }
-          });
-        } else { // 全不选选则清空绑定的数组
-          this.checkData = [];
-        }
       },
       // 购物车列表
       cartFn: function () {
@@ -128,24 +172,24 @@
         })
       }
     },
-    created () {
+    created() {
       // console.log('buyCart created 创建')
     },
-    mounted () {
+    mounted() {
       // console.log('buyCart mounted 安装 完成挂载')
       var that = this
-      that.cartFn()
+      // that.cartFn()
     },
-    updated () {
+    updated() {
       // console.log('buyCart updated 更新')
     },
-    destroyed () {
+    destroyed() {
       // console.log('buyCart destroyed 摧毁 ')
     },
     // 钩子函数来判断页面来源：
     beforeRouteEnter(to, from, next) {
       // console.log('buyCart beforeRouteEnter', to.meta.isBack)
-      if (from.name === 'mine') {
+      if (from.name === '') {
         to.meta.isBack = true;
       }
       next();
@@ -168,8 +212,8 @@
 
 <style scoped>
   .flex {display: flex;}
-  .cart_header{padding: 10px;}
-  .main{padding: 0px 10px 60px 10px;}
+  .main{padding: 0px 10px 100px 10px;}
+  #buyCart{}
   #buyCart .label_div{align-items: center;justify-content: space-between;border-bottom: 1px solid #ccc;}
   #buyCart .label_box{align-items: center;justify-content: space-between;}
   .label_box .label_left{width: 3vw}
@@ -183,7 +227,15 @@
   .label_div .icon_add .iconfont{border-radius:50%;font-size:22px;}
   .label_div .icon_add .icon-jian{color:#d8d7d7;background-color:#f2f2f2;}
   .label_div .icon_add .add_num{min-width:30px;font-size: 10px;color:#F44D4D;text-align: center;}
-  .label_div .icon_add .icon-jia1{color:#ff811a;}
+  .label_div .icon_add .icon-jia1{color:#3ac9a7;}
+  /*修改checkbox默认样式 start*/
   .label_com input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-appearance:none;border: 1px solid #c9c9c9;border-radius: 2px;outline: none;}
   .label_com input[type=checkbox]:checked{background: url("../assets/images/gou.png")no-repeat center;}
+  /*修改checkbox默认样式 over*/
+  .footer_label{padding: 0px 0px 55px 10px;position: fixed;bottom: 0;left: 0;right: 0;align-items: center;justify-content: space-between;background-color: #fff;height: 40px;background-color: #f2f2f2;}
+  .footer_label .footer_checkbox{font-size: 13px;align-items: center;}
+  .footer_label .footer_checkbox .footer_checkbox_lt{padding:0 5px; color:#666;}
+  .footer_label .footer_label_rt{font-size: 13px;height: 40px;align-items: center;}
+  .footer_label .footer_label_rt .total{padding: 0 5px;}
+  .footer_label .footer_label_rt .set_btn{height: 40px;background-color: #3ac9a7;display: flex;align-items: center;width: 60px;text-align: center;justify-content: center;color: #fff;}
 </style>
