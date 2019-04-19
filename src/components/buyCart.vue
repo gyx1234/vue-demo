@@ -7,7 +7,7 @@
         <div v-if="item.productcount!=0" class="flex label_div">
           <label class="label_com flex label_box">
             <!-- v-model 双向数据绑定命令 -->
-            <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData"
+            <input class="checkItem label_left" type="checkbox" :value="item.productid" v-model="checkData" :data-index="index"
                    v-on:click="checkOne($event, index, item.id, item.productid,item.productprice,item.productcount)">
             <div class="flex label_right">
               <div class="cart_img"><img :src="item.img_url"/></div>
@@ -19,10 +19,10 @@
           </label>
           <div class="flex icon_add">
             <i class="iconfont icon-jian"
-               v-on:click="minTapp(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
+               v-on:click="minTapp($event, index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
             <div class="add_num">{{item.productcount}}</div>
             <i class="iconfont icon-jia1"
-               v-on:click="addTap(index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
+               v-on:click="addTap($event, index, item.productcount, item.productid, item.productname, item.productprice, item.unitname)"></i>
           </div>
         </div>
       </div>
@@ -106,8 +106,9 @@
         // console.log(22222222, that.checkData)
       },
       // 减购物车
-      minTapp(index, num, productid, name, price, unitname) {
+      minTapp(e, index, num, productid, name, price, unitname) {
         var that = this
+        var checkInput = e.currentTarget.parentElement.parentElement.querySelector('input').checked
         // console.log('减购物车', index, num, productid, name, price, unitname)
         // if (Number(that.cartList[index].productcount) === 0) {
         //   that.cartList[index].productcount === 0
@@ -124,7 +125,7 @@
           // console.log('减购物车', res)
           if (res.state === 1) {
             that.cartList[index].productcount--
-            if (document.querySelector('#quan').checked) {
+            if (checkInput) {
               that.tatalPrice -= Number(price)
             }
           } else {
@@ -133,7 +134,9 @@
         })
       },
       // 添加购物车
-      addTap(index, num, productid, name, price, unitname) {
+      addTap(e, index, num, productid, name, price, unitname) {
+        var checkInput = e.currentTarget.parentElement.parentElement.querySelector('input').checked
+        // console.log(e.currentTarget.parentElement.parentElement.querySelector('input').checked)
         // console.log('添加购物车',index, num, productid, name, price, unitname)
         var that = this
         if (Number(that.cartList[index].num) <= Number(that.cartList[index].productcount)) {
@@ -151,7 +154,7 @@
           // console.log('添加购物车', res)
           if (res.state === 1) {
             that.cartList[index].productcount++
-            if (document.querySelector('#quan').checked) {
+            if (checkInput) {
               that.tatalPrice += Number(price)
             }
           } else {
