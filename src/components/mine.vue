@@ -1,7 +1,18 @@
 <template>
   <div id="mine" class="header_margintop ">
     <mt-header title="我的" fixed></mt-header>
-    <div class="main ">我的{{selected}}</div>
+    <div class="flex header_top">
+      <div class="header_img"><img src="../assets/images/icons/my_gray.png"/></div>
+      <div class="header_top_left">
+        <div class="header_name">千江有水千江月</div>
+        <div class="header_phone">17621081111</div>
+      </div>
+    </div>
+
+    <div class="main ">
+
+    </div>
+
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
   </div>
 </template>
@@ -54,6 +65,14 @@
 </script>
 
 <style scoped>
-  .main{padding: 5px 5px 60px 5px;}
+  .flex{display: flex;}
+  .header_top{align-items: center;height: 15vh;background-color: #26a2ff;color:#fff;padding: 20px;}
+  .header_top .header_img{width: 50px;height: 50px;border-radius: 50px;background-color: #fff;border: 5px solid #fff;display: flex;}
+  .header_top .header_img img{width: 100%;display: block;}
+  .header_top .header_top_left{padding-left: 10px;}
+  .header_top .header_top_left .header_name{font-size: 18px;}
+  .header_top .header_top_left .header_phone{font-size: 15px;padding-top: 5px;}
+
+  .main{padding: 5px 5px 100px 5px;}
 
 </style>

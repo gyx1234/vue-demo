@@ -79,7 +79,7 @@
       checkOne(e, index, cartid, productid, productprice, productcount) {
         var that = this
         // console.log('勾选单个商品', e.target.checked, cartid, productid, productprice,productcount)
-        console.log('勾选单个商品---单商品总价---', e, (Number(productprice) * Number(productcount)).toFixed(2))
+        // console.log('勾选单个商品---单商品总价---', e, (Number(productprice) * Number(productcount)).toFixed(2))
         if (e.target.checked) {
           that.tatalPrice += Number(productprice) * Number(productcount)
           that.tatalPrice.toFixed(2)
@@ -92,6 +92,7 @@
       checkAll(e) {
         var that = this
         if (e.target.checked) {
+          // 价格清0
           that.tatalPrice = 0
           that.cartList.forEach((el, i) => {
             // 数组里没有value的才push，防止重复push
@@ -170,7 +171,9 @@
           console.log('购物车列表', res)
           if (res.state === 1) {
             that.cartList = res.data
+            // 价格清0
             that.tatalPrice=0
+            // checkData清掉
             that.checkData=[]
           } else {
             console.log('请求错误')
