@@ -1,5 +1,5 @@
 <template>
-  <div id="twovue">
+  <div>
     <h1>我是熊二</h1>
     <div>{{msg}}</div>
   </div>
@@ -23,6 +23,9 @@
           console.log("自定义的事件触发，接收到的数据"+msg);
         })
       }
+    },
+    created() {
+      // this.two()
     },
     beforeRouteEnter(to, from, next) {
       next();

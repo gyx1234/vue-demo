@@ -20,8 +20,7 @@
     name: "brother",
     components: {onevue,twovue},
     data() {
-      return {
-      }
+      return {}
     },
   }
 </script>
