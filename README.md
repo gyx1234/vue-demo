@@ -58,13 +58,8 @@
 
             <script>
               import bus from '../../assets/js/eventbus.js'
-
               export default {
                 name: 'onevue',
-                data() {
-                  return {
-                  }
-                },
                 methods: {
                   sendToXiongEr:function(){
                     //给熊二发送消息
@@ -72,9 +67,6 @@
                     bus.$emit("msgToXiongEr",'熊二，光头强来了');
                   }
                 },
-                created() {
-
-                }
               };
             </script>
        twovue：
@@ -90,11 +82,6 @@
 
               export default {
                 name: "twovue",
-                data() {
-                  return {
-                    msg: ''
-                  }
-                },
                 methods: {
                   two() {
                     var that = this
