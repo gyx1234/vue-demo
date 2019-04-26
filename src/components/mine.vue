@@ -8,8 +8,15 @@
         <div class="header_phone">17621081111</div>
       </div>
     </div>
-
     <div class="main ">
+
+      <router-link to="/emit/mine_emit" class="flex router_link">
+        <div>子组件向父组件传值</div><i class="iconfont icon-arrow-right"></i>
+      </router-link>
+
+      <router-link to="/brother/brother" class="flex router_link">
+        <div>兄弟组件通信</div><i class="iconfont icon-arrow-right"></i>
+      </router-link>
 
     </div>
 
@@ -19,15 +26,18 @@
 
 <script>
   import tabbar from '@/components/tabbar'
-
   export default {
     name: "mine",
     components:{tabbar},
+
     data() {
       return {
         selected:"mine",
         tabs:[require("../assets/images/icons/home_gray.png"),require("../assets/images/icons/cart_gray.png"), require("../assets/images/icons/my_green.png")],
+
       }
+    },
+    methods: {
     },
     created () {
       // console.log('mine created 创建')
@@ -73,6 +83,8 @@
   .header_top .header_top_left .header_name{font-size: 18px;}
   .header_top .header_top_left .header_phone{font-size: 15px;padding-top: 5px;}
 
-  .main{padding: 5px 5px 100px 5px;}
+  .main{padding: 0px 5px 100px 5px;}
 
+  a:-webkit-any-link {cursor: pointer;text-decoration: none;color: #000;}
+  .main .router_link{justify-content: space-between;align-items: center;height: 40px;border-bottom: 1px solid #f2f2f2;}
 </style>
