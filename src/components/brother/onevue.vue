@@ -1,22 +1,29 @@
 
 <template>
   <div>
-    <button v-on:click="sendMsg">向父组件传参</button>  <!-- 这里用简单的绑定方法触发传参-->
+    <h1>我是熊大</h1>
+    <button @click="sendToXiongEr">Click Me</button>
   </div>
 </template>
 
 <script>
+  import bus from '../../assets/js/eventbus.js'
+
   export default {
     name: 'onevue',
     data() {
       return {
-       aaa:{a:1,b:2}
       }
     },
     methods: {
-      sendMsg: function () { //传参方法
-        this.$emit('headCallBack', this.aaa, 'hehe'); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      sendToXiongEr:function(){
+        //给熊二发送消息
+        //触发msgToXiongEr事件
+        bus.$emit("msgToXiongEr",'熊二，光头强来了');
       }
+    },
+    created() {
+
     }
   };
 </script>
