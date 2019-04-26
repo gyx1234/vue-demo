@@ -35,6 +35,7 @@
  组件
    tabber
 ```
+
 ``` bash
 # 兄弟组件传值
     brother
