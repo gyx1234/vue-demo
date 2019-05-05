@@ -82,6 +82,11 @@
 
               export default {
                 name: "twovue",
+                data() {
+                  return {
+                      msg: ''
+                  }
+                },
                 methods: {
                   two() {
                     var that = this
