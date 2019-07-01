@@ -123,3 +123,27 @@
           </script>
 
 ```
+
+``` bash
+
+vuex 基础理解
+
+state 设置的全局访问的state对象
+
+getters 实时监听state值的变化(最新状态)
+
+mutations 也是一个对象，这个对象里面可以放改变state的初始值的方法，具体的用法就是给里面的方法传入参数state或额外的参数,然后利用vue的双向数据驱动进行值的改变
+
+actions 包含任意异步操作，异步触发mutations里面的方法，actions里面自定义的函数接收一个context参数和要变化的形参，context与store实例具有相同的方法和属性，所以它可以执行context.commit(' ')
+
+```
+
+``` bash
+
+vuex数据结构以及读取方法
+    step1：（数据初始化定义）state 定义视图所需的原始数据结构，并进行初始化；
+    step2：（原始数据请求）使用action获取后台原始数据；
+    step3：（数据提取与容错处理）使用mutations将数据存入state中
+    tep4：数据调用。最后的数据调用方法省略，在视图中，可随意调用，结合getters可以实现多处调用的格式化（数据共享），结合mapState等方法，可以使代码更为简洁。
+
+```
