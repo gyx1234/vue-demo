@@ -111,9 +111,9 @@
       minTapp(e, index, num, productid, name, price, unitname) {
         var that = this
         var checkInput = e.currentTarget.parentElement.parentElement.querySelector('input').checked
-        // console.log('减购物车', index, num, productid, name, price, unitname)
-        // if (Number(that.cartList[index].productcount) === 0) {
-        //   that.cartList[index].productcount === 0
+        // console.log('减购物车', index.html, num, productid, name, price, unitname)
+        // if (Number(that.cartList[index.html].productcount) === 0) {
+        //   that.cartList[index.html].productcount === 0
         //   return
         // }
         that.$post(Ports.changeCart, {
@@ -139,7 +139,7 @@
       addTap(e, index, num, productid, name, price, unitname) {
         var checkInput = e.currentTarget.parentElement.parentElement.querySelector('input').checked
         // console.log(e.currentTarget.parentElement.parentElement.querySelector('input').checked)
-        // console.log('添加购物车',index, num, productid, name, price, unitname)
+        // console.log('添加购物车',index.html, num, productid, name, price, unitname)
         var that = this
         if (Number(that.cartList[index].num) <= Number(that.cartList[index].productcount)) {
           Toast({message: '只有这么多了', duration: 1000})

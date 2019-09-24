@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/components/index.vue'
+import index from '@/components/index.html.vue'
 import indexGoodsDetail from '@/components/indexGoodsDetail.vue'
 import mine from '@/components/mine.vue'
 import buyCart from '@/components/buyCart.vue'
@@ -12,7 +12,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/index',
+      path: '/index.html',
       name: 'index',
       component: index,
       meta: {

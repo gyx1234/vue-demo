@@ -37,7 +37,7 @@
         // 这里就可以通过 val 的值变更来确定去向
         switch(val){
           case "index":
-            this.$router.push({path: "/index"})
+            this.$router.push({path: "/index.html"})
             break;
           case "buyCart":
             this.$router.push({path: "/buyCart"})

@@ -55,7 +55,7 @@
       // 减购物车
       minTapp(index, num, id, name, price, unitname, gou, shoppingcart) {
         var that = this
-        // console.log('减购物车',index, num, id, name, price, unitname, gou, shoppingcart)
+        // console.log('减购物车',index.html, num, id, name, price, unitname, gou, shoppingcart)
         that.$post(Ports.changeCart, {userid: 10118, Productid: id, Productname: name, Productprice: price, Productcount: -1, Productunitname: unitname}).then((res) => {
           // console.log('减购物车', res)
           if (res.state === 1) {
@@ -70,7 +70,7 @@
       },
       // 添加购物车
       addTap(index, num, id, name, price, unitname, gou, shoppingcart) {
-        // console.log('添加购物车',index, num, id, name, price, unitname, gou, shoppingcart)
+        // console.log('添加购物车',index.html, num, id, name, price, unitname, gou, shoppingcart)
         var that = this
         // if (gou === 'gou') {
         // }
@@ -144,22 +144,22 @@
       }
     },
     created() {
-       // console.log('index created 创建')
+       // console.log('index.html created 创建')
     },
     mounted() {
-      // console.log('index 安装 完成挂载')
+      // console.log('index.html 安装 完成挂载')
       var that = this
       that.goodstypes()
     },
     updated() {
-      // console.log('index  updated 更新')
+      // console.log('index.html  updated 更新')
     },
     destroyed() {
-      // console.log('index destroyed 摧毁 ')
+      // console.log('index.html destroyed 摧毁 ')
     },
     // 钩子函数来判断页面来源：
     beforeRouteEnter(to, from, next) {
-      console.log('index beforeRouteEnter', from.name)
+      console.log('index.html beforeRouteEnter', from.name)
       if (from.name === 'indexGoodsDetail' || from.name === 'mine') { //判断是从哪个路由过来的，若是detail页面不需要刷新获取新数据，直接用之前缓存的数据即可
         to.meta.isBack = true;
       }
@@ -168,10 +168,10 @@
     // keep-alive 组件激活时调用。
     activated() {
       var that = this
-      console.log('index activated ', that.$route.meta.isBack)
+      console.log('index.html activated ', that.$route.meta.isBack)
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       if (!that.$route.meta.isBack) {
-        // console.log('index activated----', '表明需要获取新数据，否则就不再请求，直接使用缓存的数据')
+        // console.log('index.html activated----', '表明需要获取新数据，否则就不再请求，直接使用缓存的数据')
         that.selected = "index"
         that.goodstypes() // 商品分类
       }

@@ -9,16 +9,16 @@
 
    利用js（携参）：
    1）this.$router.push({path: '/indexGoodsDetail', query: {id: e}})
-   获取参数：this.$route.query.id
-   query将参数显示在地址栏
+       获取参数：this.$route.query.id
+       query将参数显示在地址栏
 
    2）this.$router.push({name: 'indexGoodsDetail', params: {id: e}})
-   获取参数：this.$route.params.id
-   params携带的参数不会显示在地址栏
+       获取参数：this.$route.params.id
+       params携带的参数不会显示在地址栏
 
 # 利用keep-alive实现 vue 缓存缓存问题
-   beforeRouteEnter钩子函数来判断页面来源
-   activated keep-alive 组件激活时调用
+    beforeRouteEnter钩子函数来判断页面来源
+    activated keep-alive 组件激活时调用
 
 # 安装 Mint UI
    使用Header
@@ -35,6 +35,8 @@
  组件
    tabber
 ```
+
+
 
 ``` bash
 # 兄弟组件传值
