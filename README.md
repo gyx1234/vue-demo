@@ -25,6 +25,7 @@
    使用Tabbar：将Tabbar实现组件化，利用props动态传值改变选中状态
 ```
 
+
 ``` bash
 # 目录结构
    index 首页
@@ -43,7 +44,7 @@
         onevue 发送组件
         twovue 接收组件
 
-    >在两个兄弟组件之间通信，需要一个中间的桥梁，在这里我管叫 eventbus，我选择在src/assets/js/eventbus.js 中新建，就写如下两行:
+    > 在两个兄弟组件之间通信，需要一个中间的桥梁，在这里我管叫 eventbus，我选择在src/assets/js/eventbus.js 中新建，就写如下两行:
         import Vue from 'vue';
         export default new Vue();
 
@@ -61,7 +62,7 @@
               export default {
                 name: 'onevue',
                 methods: {
-                  sendToXiongEr:function(){
+                  sendToXiongEr:function() {
                     //给熊二发送消息
                     //触发msgToXiongEr事件
                     bus.$emit("msgToXiongEr",'熊二，光头强来了');

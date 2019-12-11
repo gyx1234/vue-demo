@@ -7,7 +7,12 @@
     </mt-header>
 
     <emit v-on:headCallBack="headCall"></emit>
-    {{msg}}{{hehe}}
+    <br/>
+    msg：{{msg}}
+    <br/>
+    two： {{two}}
+    <br/>
+    three：{{three}}
   </div>
 </template>
 
@@ -19,21 +24,23 @@
     data() {
       return {
         msg: '',
-        hehe: ''
+        two: '',
+        three:''
       }
     },
     components: {emit},
     methods: {
       //回调方法，接收子组件传的参数
-      headCall: function (msg,hehe) {
-        this.msg = msg;
-        this.hehe = hehe
-        console.log('接收子组件传的参数', msg, hehe)
+      headCall: function (msg,two,three) {
+        this.msg = msg
+        this.two = two
+        this.three = three
+        console.log('接收子组件传的参数', msg, two)
       }
     },
     // 钩子函数来判断页面来源：
     beforeRouteEnter(to, from, next) {
-      next();
+      next()
     },
     // keep-alive 组件激活时调用。
     activated() {
@@ -41,7 +48,6 @@
       if (!that.$route.meta.isBack) {
         that.msg = ""
         that.hehe = ''
-
       }
       that.$route.meta.isBack = false
     }

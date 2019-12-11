@@ -14,13 +14,20 @@ axios.interceptors.request.use((config) => {
   return Promise.reject(err);
 });
 
+// //添加响应拦截器
+// axios.interceptors.response.use(function(response){
+//   return response;
+// },function(error){
+//   return Promise.reject(error);
+// });
+
 export function get(url, data = {}, method = 'get') {
   return new Promise((resolve, reject) => {
     axios({
       url: url,
       method: method,
       headers: {'Content-Type': 'application/json'},
-      data: data
+      data: data,
     })
       .then(res => {
         resolve(res.data)

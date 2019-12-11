@@ -28,7 +28,7 @@
       // this.two()
     },
     beforeRouteEnter(to, from, next) {
-      next();
+      next()
     },
     activated() {
       this.msg=''

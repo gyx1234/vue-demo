@@ -53,7 +53,7 @@
     components: {tabbar},
     data() {
       return {
-        selected: "buyCart,hehe",
+        selected: "buyCart",
         tabs: [require("../assets/images/icons/home_gray.png"), require("../assets/images/icons/cart_green.png"), require("../assets/images/icons/my_gray.png")],
         cartList: [],
         checkData: [], // 双向绑定checkbox数据数组

@@ -18,6 +18,23 @@
         <div>兄弟组件通信</div><i class="iconfont icon-arrow-right"></i>
       </router-link>
 
+      <router-link to="/timer" class="flex router_link">
+        <div>监听计时器timer</div><i class="iconfont icon-arrow-right"></i>
+      </router-link>
+
+      <router-link to="/fuxiangzi/fuxiangzi_fu" class="flex router_link">
+        <div>父组件向子组件传值</div><i class="iconfont icon-arrow-right"></i>
+      </router-link>
+
+      <router-link to="/vuex/vuex_index" class="flex router_link">
+        <div>vuex</div><i class="iconfont icon-arrow-right"></i>
+      </router-link>
+
+
+      <!--<router-link to="/shuangxiang/shuangx_index" class="flex router_link">-->
+        <!--<div>双向绑定</div><i class="iconfont icon-arrow-right"></i>-->
+      <!--</router-link>-->
+
     </div>
 
     <tabbar :selected="selected" :tabs='tabs'></tabbar>
@@ -26,6 +43,7 @@
 
 <script>
   import tabbar from '@/components/tabbar'
+
   export default {
     name: "mine",
     components:{tabbar},
@@ -34,11 +52,9 @@
       return {
         selected:"mine",
         tabs:[require("../assets/images/icons/home_gray.png"),require("../assets/images/icons/cart_gray.png"), require("../assets/images/icons/my_green.png")],
-
       }
     },
-    methods: {
-    },
+
     created () {
       // console.log('mine created 创建')
     },
