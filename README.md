@@ -1,7 +1,6 @@
 # three
 
 
-
 > A Vue.js project
 
 ``` bash
