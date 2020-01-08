@@ -1,5 +1,6 @@
 # three
 
+
 > A Vue.js project
 
 ``` bash
@@ -26,7 +27,16 @@
 ```
 
 
+``` bash
+# 目录结构
+   index 首页
+     indexGoodsDetail 商品详情页
+   buyCart 购物车
+   mine 我的
 
+ 组件
+   tabber
+```
 
 ``` bash
 # 兄弟组件传值
